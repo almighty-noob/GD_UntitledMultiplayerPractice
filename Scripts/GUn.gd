@@ -2,7 +2,7 @@ extends Node2D
 @onready var switch_weapons = $"Switch Weapons"
 
 var Pistol = {dmg=20, fire_Rate = 0.5, range = 2000, Sprite = 0, mag = 8, reload = 3.0, sound = preload("res://Assets/smg_audio.mp3")}
-var SMG = {dmg = 5, fire_Rate = 0.1, range = 500, Sprite = 1, mag = 30, reload = 2.0, sound = preload("res://Assets/smg_audio.mp3")}
+var SMG = {dmg = 5, fire_Rate = 0.1, range = 500, Sprite = 1, mag = 30, reload = 1.2, sound = preload("res://Assets/smg_audio.mp3")}
 var Revolver = {dmg = 100, fire_Rate = 1.0, range = 2000, Sprite = 2, mag = 5, reload = 2.5, sound = preload("res://Assets/smg_audio.mp3")}
 
 @export var Current_Weapon: Dictionary
