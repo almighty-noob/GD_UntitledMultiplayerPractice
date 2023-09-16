@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmmihsvb1uqnk"]
+
+[ext_resource type="Script" path="res://Scripts/GUn.gd" id="1_3e80p"]
+[ext_resource type="Texture2D" uid="uid://cd2vudq37il2v" path="res://Assets/WEapons.png" id="2_5uodq"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_q4271"]
+properties/0/path = NodePath("Sprite2D:frame")
+properties/0/spawn = true
+properties/0/sync = true
+properties/1/path = NodePath(".:Current_Weapon")
+properties/1/spawn = true
+properties/1/sync = true
+
+[node name="gun" type="Node2D"]
+scale = Vector2(0.75, 0.75)
+script = ExtResource("1_3e80p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.411765, 0.313726, 0.227451, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_5uodq")
+hframes = 3
+
+[node name="Switch Weapons" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_q4271")

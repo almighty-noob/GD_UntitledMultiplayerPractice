@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://hymr1dux64w"]
+
+[ext_resource type="Script" path="res://Scripts/bullet.gd" id="1_kdpud"]
+[ext_resource type="Texture2D" uid="uid://djsnyp85elwu7" path="res://Assets/bullet.png" id="1_ysvy7"]
+
+[node name="Bullet" type="RigidBody2D"]
+collision_layer = 0
+gravity_scale = 0.0
+script = ExtResource("1_kdpud")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("1_ysvy7")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-5.99073, 4.5085, 0.00927353, 4.5085, 4.4375, 2.125, 6.3125, 0.75, 6.4375, -0.75, 4.4375, -2.125, 0.00927353, -4.59375, -5.99073, -4.59375)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-6, -4, -6, 4, 0, 4, 6, 0, 0, -4)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

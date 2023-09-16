@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bow51cc4clswx"]
+
+[ext_resource type="TileSet" uid="uid://k4un51e64iwf" path="res://Scenes/PlainsTileMap.tres" id="1_rcsp2"]
+
+[node name="TileMapForPlains" type="TileMap"]
+tile_set = ExtResource("1_rcsp2")
+format = 2

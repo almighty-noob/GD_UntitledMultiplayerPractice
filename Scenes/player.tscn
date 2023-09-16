@@ -1,0 +1,206 @@
+[gd_scene load_steps=16 format=3 uid="uid://b526bbqk2p8th"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_bhvo8"]
+[ext_resource type="Texture2D" uid="uid://bctyf6utc8wdq" path="res://Assets/Player.png" id="1_kc2an"]
+[ext_resource type="PackedScene" uid="uid://hymr1dux64w" path="res://Scenes/bullet.tscn" id="2_n3xma"]
+[ext_resource type="PackedScene" uid="uid://dmmihsvb1uqnk" path="res://Scenes/GUn.tscn" id="3_c3ecm"]
+[ext_resource type="Texture2D" uid="uid://4ohgdfiiyqvi" path="res://Assets/HitMarks.png" id="5_83orq"]
+[ext_resource type="Texture2D" uid="uid://b853hiem7yll" path="res://Assets/reload_progress.png" id="6_amj4l"]
+[ext_resource type="AudioStream" uid="uid://os5ibwomt1vn" path="res://Assets/smg_audio.mp3" id="7_er447"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wd4ec"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_byv7q"]
+size = Vector2(34, 32)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vx8uy"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/1/path = NodePath("gun:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/2/path = NodePath("HP:value")
+properties/2/spawn = true
+properties/2/sync = true
+properties/3/path = NodePath("HitMarks:frame")
+properties/3/spawn = true
+properties/3/sync = true
+properties/4/path = NodePath("HitMarks:visible")
+properties/4/spawn = true
+properties/4/sync = true
+properties/5/path = NodePath("hitscan:target_position")
+properties/5/spawn = true
+properties/5/sync = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wot2u"]
+bg_color = Color(0.0313726, 0.0313726, 0.0313726, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lvoxh"]
+bg_color = Color(0.52549, 0, 0.0627451, 1)
+
+[sub_resource type="Animation" id="Animation_hsq18"]
+resource_name = "GetHit"
+length = 0.5
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_e0p0c"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k3o60"]
+_data = {
+"GetHit": SubResource("Animation_hsq18"),
+"RESET": SubResource("Animation_e0p0c")
+}
+
+[node name="Player" type="CharacterBody2D" groups=["Characters"]]
+position = Vector2(21, 21)
+collision_layer = 2
+collision_mask = 9
+script = ExtResource("1_bhvo8")
+bullet = ExtResource("2_n3xma")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_kc2an")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wd4ec")
+
+[node name="WallDetectorRight" type="RayCast2D" parent="."]
+visible = false
+scale = Vector2(1, 28.946)
+target_position = Vector2(24, 0)
+
+[node name="WallDetectorLeft" type="RayCast2D" parent="."]
+visible = false
+rotation = -3.14159
+scale = Vector2(1, 28.946)
+target_position = Vector2(24, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+limit_left = 0
+limit_bottom = 768
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.72
+drag_top_margin = 0.66
+drag_right_margin = 0.56
+drag_bottom_margin = 0.43
+
+[node name="Coyote" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="DangerDetectorArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 0
+
+[node name="DangerDetector" type="CollisionPolygon2D" parent="DangerDetectorArea"]
+polygon = PackedVector2Array(-13, 0, -11, -11, 0, -13, 11, -11, 13, 0, 11, 11, 0, 13, -11, 11)
+
+[node name="GoodStuffDetector" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoodStuffDetector"]
+shape = SubResource("RectangleShape2D_byv7q")
+
+[node name="dashDuration" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="gun" parent="." instance=ExtResource("3_c3ecm")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_vx8uy")
+
+[node name="hitscan" type="RayCast2D" parent="."]
+target_position = Vector2(2000, 0)
+collision_mask = 3
+
+[node name="HP" type="ProgressBar" parent="."]
+offset_left = -19.0
+offset_top = -25.0
+offset_right = 133.97
+offset_bottom = 2.0
+scale = Vector2(0.249, 0.249)
+theme_override_styles/background = SubResource("StyleBoxFlat_wot2u")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lvoxh")
+max_value = 200.0
+value = 200.0
+show_percentage = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_k3o60")
+}
+
+[node name="HitMarks" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("5_83orq")
+hframes = 4
+
+[node name="Can_Fire" type="Timer" parent="."]
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -63.0
+offset_top = -741.0
+offset_right = -23.0
+offset_bottom = -701.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+color = Color(0.184314, 0.117647, 0.137255, 1)
+
+[node name="reloader" type="TextureProgressBar" parent="CanvasLayer/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 144.0
+offset_bottom = 144.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+step = 0.01
+value = 100.0
+fill_mode = 4
+texture_progress = ExtResource("6_amj4l")
+tint_under = Color(0, 0, 0, 0.756863)
+tint_progress = Color(0.913725, 0.913725, 0.913725, 0.87451)
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="reload_time" type="Timer" parent="."]
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_er447")
+pitch_scale = 0.2
+
+[connection signal="weapon_changed" from="gun" to="." method="_on_gun_weapon_changed"]
+[connection signal="timeout" from="reload_time" to="." method="_on_reload_time_timeout"]

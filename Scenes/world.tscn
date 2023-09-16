@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://00rltwyhhumt"]
+
+[ext_resource type="PackedScene" uid="uid://b526bbqk2p8th" path="res://Scenes/player.tscn" id="1_dqtyq"]
+[ext_resource type="Script" path="res://Scripts/world.gd" id="1_ev7y3"]
+[ext_resource type="PackedScene" uid="uid://cn032evdwjdc7" path="res://Scenes/level_1.tscn" id="3_4f334"]
+[ext_resource type="Script" path="res://Scripts/level_1.gd" id="4_tyjxv"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_ev7y3")
+Player = ExtResource("1_dqtyq")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(1368, 0, 1368, 768, 0, 768, 0, -8, 1440, 0, 1440, -64, -64, -64, -64, 832, 1472, 832, 1472, -8)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -253.0
+offset_top = -184.0
+offset_right = 253.0
+offset_bottom = 184.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="host" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Create game"
+
+[node name="join" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join Game"
+
+[node name="Address" type="LineEdit" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter game Address"
+alignment = 1
+
+[node name="Address2" type="LineEdit" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter Port"
+alignment = 1
+
+[node name="Level1" parent="." instance=ExtResource("3_4f334")]
+script = ExtResource("4_tyjxv")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn", "res://Scenes/level_1.tscn", "res://Scenes/GUn.tscn")
+spawn_path = NodePath("../Level1")
+
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/join" to="." method="_on_join_pressed"]
