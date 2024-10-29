@@ -16,7 +16,7 @@ Input keys can be defined within the Engine and are fully customizable for K&M o
 2. Each player can use the jump key to gain height. If the first jump is launched off the ground then an optional second jump can be activated mid-air once.<br/>
 3. Each player can use the dash key to propel forward a short distance with a burst of speed one time. Touching the ground will reset this cooldown. <br/>
 4. Aim using the Mouse and shoot with the Fire button.<br/>
-5. Players also have the option to perform a wall jump for extra horizontal speed greater than the normal movement. This is done by pressing the opposite directional key when a player is close or touching a wall. <br/>
+5. Players also have the option to perform a wall jump for extra horizontal speed greater than the normal movement. This is done by pressing the opposite directional key when a player is close to or touching a wall. <br/>
 
 **Guns:** <br/>
 The game has 3 guns as of now. <br/>
